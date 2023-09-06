@@ -18,7 +18,10 @@ import {
     Avatar,
     IconButton,
     Tooltip,
+    Drawer,
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+
 
 const TABS = [
     {
@@ -35,7 +38,7 @@ const TABS = [
     },
 ];
 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ["Name", "Active", "Deadline", "Created by", "Responsible Person", "Project", "Tag"];
 
 const TABLE_ROWS = [
     {
@@ -86,16 +89,19 @@ const TABLE_ROWS = [
 ];
 
 export function Task() {
+
+
+   
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            Members list
+                            My Task
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal">
-                            See information about all members
+                            See information about all Task
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -103,7 +109,13 @@ export function Task() {
                             view all
                         </Button>
                         <Button className="flex items-center gap-3" size="sm">
-                            <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                           
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                            Add new task
+
+
                         </Button>
                     </div>
                 </div>
@@ -139,7 +151,7 @@ export function Task() {
                                         color="blue-gray"
                                         className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                                     >
-                                        {head}{" "}
+                                        {head}
                                         {index !== TABLE_HEAD.length - 1 && (
                                             <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                                         )}
@@ -150,7 +162,7 @@ export function Task() {
                     </thead>
                     <tbody>
                         {TABLE_ROWS.map(
-                            ({ img, name, email, job, org, online, date }, index) => {
+                            (data, index) => {
                                 const isLast = index === TABLE_ROWS.length - 1;
                                 const classes = isLast
                                     ? "p-4"
@@ -160,21 +172,21 @@ export function Task() {
                                     <tr key={name}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={img} alt={name} size="sm" />
+                                                <Avatar src={data?.img} alt={data?.name} size="sm" />
                                                 <div className="flex flex-col">
                                                     <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal"
                                                     >
-                                                        {name}
+                                                        {data?.name}
                                                     </Typography>
                                                     <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal opacity-70"
                                                     >
-                                                        {email}
+                                                        {data?.email}
                                                     </Typography>
                                                 </div>
                                             </div>
@@ -186,14 +198,14 @@ export function Task() {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {job}
+                                                    {data?.job}
                                                 </Typography>
                                                 <Typography
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal opacity-70"
                                                 >
-                                                    {org}
+                                                    {data?.org}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -202,8 +214,8 @@ export function Task() {
                                                 <Chip
                                                     variant="ghost"
                                                     size="sm"
-                                                    value={online ? "online" : "offline"}
-                                                    color={online ? "green" : "blue-gray"}
+                                                    value={data?.online ? "online" : "offline"}
+                                                    color={data?.online ? "green" : "blue-gray"}
                                                 />
                                             </div>
                                         </td>
@@ -213,15 +225,18 @@ export function Task() {
                                                 color="blue-gray"
                                                 className="font-normal"
                                             >
-                                                {date}
+                                                {data?.date}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Edit User">
+                                            <Link to='/task-details'>
+                                            <Tooltip content="Edit task">
                                                 <IconButton variant="text">
                                                     <PencilIcon className="h-4 w-4" />
                                                 </IconButton>
-                                            </Tooltip>
+                                                </Tooltip>
+                                            </Link>
+                                         
                                         </td>
                                     </tr>
                                 );
