@@ -91,7 +91,7 @@ const TABLE_ROWS = [
 export function Task() {
 
 
-   
+
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -108,15 +108,17 @@ export function Task() {
                         <Button variant="outlined" size="sm">
                             view all
                         </Button>
-                        <Button className="flex items-center gap-3" size="sm">
-                           
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            Add new task
+                        <Link to='/create-task'>
+                            <Button className="flex items-center gap-3" size="sm">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                Add new task
 
 
-                        </Button>
+                            </Button>
+                        </Link>
                     </div>
                 </div>
                 <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -230,13 +232,13 @@ export function Task() {
                                         </td>
                                         <td className={classes}>
                                             <Link to='/task-details'>
-                                            <Tooltip content="Edit task">
-                                                <IconButton variant="text">
-                                                    <PencilIcon className="h-4 w-4" />
-                                                </IconButton>
+                                                <Tooltip content="Edit task">
+                                                    <IconButton variant="text">
+                                                        <PencilIcon className="h-4 w-4" />
+                                                    </IconButton>
                                                 </Tooltip>
                                             </Link>
-                                         
+
                                         </td>
                                     </tr>
                                 );

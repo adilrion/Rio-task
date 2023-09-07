@@ -14,11 +14,11 @@ const Home = () => {
 
             <TopNavbar />
 
-            <div className="grid grid-cols-12 gap-x-3">
+            <div className="grid grid-cols-12 ">
                 <div className="col-span-3 relative">
                     <Sidebar />
                 </div>
-                <div className="col-span-9 py-5">
+                <div className="col-span-9 ">
                     <Outlet />
                 </div>
             </div>
