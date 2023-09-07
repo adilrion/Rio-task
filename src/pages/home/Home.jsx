@@ -1,13 +1,15 @@
 import React from 'react'
 import { TopNavbar } from '../../components/navigation/Navbar'
 import { Footer } from '../../components/footer/footer'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useRoutes } from 'react-router-dom'
 import { Sidebar } from '../../components/navigation/Sidebar'
+import { Task } from '../tasks/Task'
 
 const Home = () => {
 
   
-
+    const path = useLocation();
+   
 
     return (
         <>
@@ -19,6 +21,8 @@ const Home = () => {
                     <Sidebar />
                 </div>
                 <div className="col-span-9 ">
+
+                    {path?.pathname === '/' && <Task/>}
                     <Outlet />
                 </div>
             </div>

@@ -27,6 +27,7 @@ import {
 import React from "react";
 import { NotificationsMenu } from "../notifications/Notification";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
 // import Sidebar from "./Sidebar";
 
 // profile menu component
@@ -59,12 +60,12 @@ function ProfileMenu() {
     const closeMenu = () => setIsMenuOpen(false);
 
     return (
-        
+
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
-            
+
             <MenuHandler>
 
-               
+
                 <Button
                     variant="text"
                     color="blue-gray"
@@ -85,9 +86,9 @@ function ProfileMenu() {
 
 
                 </Button>
-                
+
             </MenuHandler>
-           
+
             <MenuList className="p-1">
                 {profileMenuItems.map(({ label, icon }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
@@ -96,8 +97,8 @@ function ProfileMenu() {
                             key={label}
                             onClick={closeMenu}
                             className={`flex items-center gap-2 rounded ${isLastItem
-                                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                    : ""
+                                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                                : ""
                                 }`}
                         >
                             {React.createElement(icon, {
@@ -190,7 +191,7 @@ function NavListMenu() {
             <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
                 {renderItems}
             </ul>
-            
+
         </React.Fragment>
     );
 }
@@ -225,21 +226,25 @@ export default function NavList() {
                     className="font-normal"
                 >
 
-                    <Link to={`/${label?.toLowerCase() }`}>
-                    <MenuItem className="flex items-center gap-2 lg:rounded-full">
-                        {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-                        {label}
+                    <Link to={`/${label?.toLowerCase()}`}>
+                        <MenuItem className="flex items-center gap-2 lg:rounded-full">
+                            {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
+                            {label}
                         </MenuItem>
                     </Link>
                 </Typography>
             ))}
 
-            <NotificationsMenu/>
+            <NotificationsMenu />
         </ul>
     );
 }
 
 export function TopNavbar() {
+
+
+    const { auth } = useAuthContext();
+
     const [isNavOpen, setIsNavOpen] = React.useState(false);
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -252,8 +257,8 @@ export function TopNavbar() {
     }, []);
 
     return (
-        <Navbar className="rounded-none sticky top-0 z-10 h-max max-w-full shadow-sm">
-            <div className="relative mx-auto flex items-center text-blue-gray-900">
+        <Navbar className="rounded-none h-max max-w-full shadow-sm">
+            <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
 
                 {/* <Sidebar/> */}
                 <Typography
@@ -263,11 +268,11 @@ export function TopNavbar() {
                 >
                     Rio Task
                 </Typography>
-                
+
                 <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
                     <NavList />
                 </div>
-                
+
                 <IconButton
                     size="sm"
                     color="blue-gray"
@@ -277,11 +282,17 @@ export function TopNavbar() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-               
-                <ProfileMenu />
-               
+                {
+
+                    auth ? <ProfileMenu /> : (
+                        <Link to='/login' className="float-right"><Button>Login</Button></Link>
+                    )
+
+                }
+
+
             </div>
-          
+
             <MobileNav open={isNavOpen} className="overflow-scroll">
                 <NavList />
             </MobileNav>

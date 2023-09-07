@@ -7,8 +7,10 @@ import {
   Textarea,
   IconButton,
 } from "@material-tailwind/react";
+import { useTaskContext } from '../../context/TaskContext';
 
 export function CreateTask() {
+  const { dispatch } = useTaskContext();
   // Define state variables for form inputs
   const [formData, setFormData] = useState({
     title: '',
@@ -20,6 +22,8 @@ export function CreateTask() {
 
   // Handle form input changes
   const handleInputChange = (e) => {
+
+
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -30,8 +34,8 @@ export function CreateTask() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can do something with the formData here, such as sending it to an API or saving it to context/local storage
-    console.log('Form data submitted:', formData);
+    // Dispatch an action to add the task to the context
+    dispatch({ type: 'ADD_TASK', payload: formData });
     // Reset the form
     setFormData({
       title: '',
@@ -105,7 +109,7 @@ export function CreateTask() {
 
           <div className="flex w-full justify-between py-1.5">
             <IconButton variant="text" color="blue-gray" size="sm">
-              {/* Add your icon here */}
+            fdg
             </IconButton>
 
             <div className="flex gap-2">
