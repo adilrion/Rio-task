@@ -18,7 +18,7 @@ export function CreateTask() {
     responsiblePerson: '',
     createdBy: '',
     deadline: '',
-    status: 'pending',
+    status: 'complete',
     careatedDate: new Date()
 
   });

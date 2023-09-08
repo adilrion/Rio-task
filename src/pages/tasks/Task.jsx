@@ -22,6 +22,8 @@ import {
     Drawer,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { TaskItem } from "./TaskItem";
+import { useTaskContext } from "../../context/TaskContext";
 
 
 const TABS = [
@@ -39,7 +41,7 @@ const TABS = [
     },
 ];
 
-const TABLE_HEAD = ["Name", "Active", "Deadline", "Created by", "Responsible Person", "Project", "Tag"];
+
 
 const TABLE_ROWS = [
     {
@@ -92,10 +94,14 @@ const TABLE_ROWS = [
 export function Task() {
 
 
+    const { state } = useTaskContext();
+
+    const filteredTasks = state.tasks.filter((task) => task.status === 'desiredStatus');
+
 
     return (
-        <Card className="h-full w-full">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
+        <Card className="h-full w-full bg-[#EEF1FF]">
+            <CardHeader floated={false} shadow={false} className="rounded p-5">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
                         <Typography variant="h5" color="blue-gray">
@@ -140,115 +146,64 @@ export function Task() {
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-                <table className="mt-4 w-full min-w-max table-auto text-left">
-                    <thead>
-                        <tr>
-                            {TABLE_HEAD.map((head, index) => (
-                                <th
-                                    key={head}
-                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                                >
-                                    <Typography
-                                        variant="small"
-                                        color="blue-gray"
-                                        className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                                    >
-                                        {head}
-                                        {index !== TABLE_HEAD.length - 1 && (
-                                            <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                                        )}
-                                    </Typography>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {TABLE_ROWS.map(
-                            (data, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
-                                const classes = isLast
-                                    ? "p-4"
-                                    : "p-4 border-b border-blue-gray-50";
+            <CardBody className="overflow-x-auto p-5 grid grid-cols-3 gap-3">
+                <div className="col-span-1">
+                    <div className="bg-orange-500 flex justify-center py-3 rounded">
+                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                            Pending
+                        </h1>
+                    </div>
 
-                                return (
-                                    <tr key={index}>
-                                        <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar src={data?.img} alt={data?.name} size="sm" />
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {data?.name}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal opacity-70"
-                                                    >
-                                                        {data?.email}
-                                                    </Typography>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="flex flex-col">
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {data?.job}
-                                                </Typography>
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal opacity-70"
-                                                >
-                                                    {data?.org}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="w-max">
-                                                <Chip
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    value={data?.online ? "online" : "offline"}
-                                                    color={data?.online ? "green" : "blue-gray"}
-                                                />
-                                            </div>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {data?.date}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Link to='/task-details'>
-                                                <Tooltip content="Edit task">
-                                                    <IconButton variant="text">
-                                                        <PencilIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </Link>
+                    <div className="">
 
-                                        </td>
-                                    </tr>
-                                );
-                            },
-                        )}
-                    </tbody>
-                </table>
+                        {
+                            state?.tasks?.filter((task) => task.status === 'pending').map((data, index) => (
+                                <TaskItem key={index} data={data} bg={`bg-orange-500`} />
+                            ))
+                        }
+
+                    </div>
+
+                </div>
+                <div className="col-span-1">
+                    <div className="bg-teal-500 flex justify-center py-3 rounded">
+                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                            Progress
+                        </h1>
+                    </div>
+
+                    <div className="">
+
+                        {
+                            state?.tasks?.filter((task) => task.status === 'progress').map((data, index) => (
+                                <TaskItem key={index} data={data} bg={`bg-teal-500`} />
+                            ))
+                        }
+
+                    </div>
+
+                </div>
+                <div className="col-span-1">
+                    <div className="bg-[#B1B2FF] flex justify-center py-3 rounded">
+                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                            Complete
+                        </h1>
+                    </div>
+
+                    <div className="">
+
+                        {
+                            state?.tasks?.filter((task) => task.status === 'complete').map((data, index) => (
+                                <TaskItem key={index} data={data} bg={`bg-[#B1B2FF]`} />
+                            ))
+                        }
+
+                    </div>
+
+                </div>
+
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+            <CardFooter className="p-5 flex items-center justify-between border-t border-blue-gray-50 ">
                 <Typography variant="small" color="blue-gray" className="font-normal">
                     Page 1 of 10
                 </Typography>
