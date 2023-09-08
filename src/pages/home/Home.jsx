@@ -1,5 +1,5 @@
 import React from 'react'
-import { Footer } from '../../components/footer/footer'
+// import { Footer } from '../../components/footer/footer'
 import { Outlet, useLocation, useRoutes } from 'react-router-dom'
 import { Sidebar } from '../../components/navigation/Sidebar'
 import { Task } from '../tasks/Task'
@@ -7,9 +7,9 @@ import TopNavbar from '../../components/navigation/Navbar'
 
 const Home = () => {
 
-  
+
     const path = useLocation();
-   
+
 
     return (
         <>
@@ -22,13 +22,13 @@ const Home = () => {
                 </div>
                 <div className="col-span-9 ">
 
-                    {path?.pathname === '/' && <Task/>}
+                    {path?.pathname === '/' && <Task />}
                     <Outlet />
                 </div>
             </div>
 
 
-            <Footer />
+            {/* <Footer /> */}
 
 
         </>
