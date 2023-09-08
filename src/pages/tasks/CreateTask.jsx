@@ -49,6 +49,7 @@ export function CreateTask() {
       createdBy: '',
       deadline: '',
     });
+    
   };
 
   return (
@@ -103,7 +104,7 @@ export function CreateTask() {
             <div className="py-2 grid grid-cols-12 items-center border-b ">
               <h1 className="col-span-3">Deadline</h1>
               <input
-                type="text"
+                type="datetime-local"
                 name="deadline"
                 value={formData.deadline}
                 onChange={handleInputChange}
