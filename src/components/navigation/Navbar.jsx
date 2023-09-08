@@ -28,6 +28,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import { NotificationsMenu } from "../notifications/Notification";
+import { useAuthContext } from "../../context/AuthContext";
 
 // Profile menu items
 const profileMenuItems = [
@@ -53,7 +54,7 @@ const profileMenuItems = [
     },
 ];
 
-function ProfileMenu() {
+function ProfileMenu({ user, Logout }) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const closeMenu = () => setIsMenuOpen(false);
@@ -81,6 +82,24 @@ function ProfileMenu() {
                 </Button>
             </MenuHandler>
             <MenuList className="p-1">
+
+
+                <div className="w-full flex justify-center flex-col items-center p-5">
+                    <Avatar
+                        variant="circular"
+                        size="lg"
+                        alt="tania andrew"
+                        className="border border-gray-900 p-0.5"
+                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                    />
+                    <Typography variant="h6" color="blue" textGradient>
+                       {user?.displayName}
+                    </Typography>
+                   
+                    <Typography variant="p" color="blue-gray" textGradient >
+                        Lorem ipsum dolor sit amet.
+                    </Typography>
+                </div>
                 {profileMenuItems.map(({ label, icon }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
                     return (
@@ -97,12 +116,14 @@ function ProfileMenu() {
                                 strokeWidth: 2,
                             })}
                             <Typography
-                                as="span"
+                                as={isLastItem ? 'button' : 'span'}
                                 variant="small"
                                 className="font-normal"
                                 color={isLastItem ? "red" : "inherit"}
+                                onClick={isLastItem ? () => Logout() : null}
                             >
-                                {label}
+                               
+                                {label }
                             </Typography>
                         </MenuItem>
                     );
@@ -113,83 +134,7 @@ function ProfileMenu() {
 }
 
 // Nav list menu items
-const navListMenuItems = [
-    {
-        title: "@material-tailwind/html",
-        description:
-            "Learn how to use @material-tailwind/html, packed with rich components and widgets.",
-    },
-    {
-        title: "@material-tailwind/react",
-        description:
-            "Learn how to use @material-tailwind/react, packed with rich components for React.",
-    },
-    {
-        title: "Material Tailwind PRO",
-        description:
-            "A complete set of UI Elements for building faster websites in less time.",
-    },
-];
 
-function NavListMenu() {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-    const renderItems = navListMenuItems.map(({ title, description }) => (
-        <a href="#" key={title}>
-            <MenuItem>
-                <Typography variant="h6" color="blue-gray" className="mb-1">
-                    {title}
-                </Typography>
-                <Typography variant="small" color="gray" className="font-normal">
-                    {description}
-                </Typography>
-            </MenuItem>
-        </a>
-    ));
-
-    return (
-        <React.Fragment>
-            <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
-                <MenuHandler>
-                    <Typography
-                        as="a"
-                        href="#"
-                        variant="small"
-                        className="font-normal"
-                    >
-                        <MenuItem className="hidden items-center gap-2 text-blue-gray-900 lg:flex lg:rounded-full">
-                            <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
-                            <ChevronDownIcon
-                                strokeWidth={2}
-                                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
-                                    }`}
-                            />
-                        </MenuItem>
-                    </Typography>
-                </MenuHandler>
-                <MenuList className="hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid">
-                    <Card
-                        color="blue"
-                        shadow={false}
-                        variant="gradient"
-                        className="col-span-3 grid h-full w-full place-items-center rounded-md"
-                    >
-                        <RocketLaunchIcon strokeWidth={1} className="h-28 w-28" />
-                    </Card>
-                    <ul className="col-span-4 flex w-full flex-col gap-1">
-                        {renderItems}
-                    </ul>
-                </MenuList>
-            </Menu>
-            <MenuItem className="flex items-center gap-2 text-blue-gray-900 lg:hidden">
-                <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
-            </MenuItem>
-            <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
-                {renderItems}
-            </ul>
-        </React.Fragment>
-    );
-}
 
 // Nav list items
 const navListItems = [
@@ -210,7 +155,7 @@ const navListItems = [
 function NavList() {
     return (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-            <NavListMenu />
+          
             {navListItems.map(({ label, icon }, key) => (
                 <Typography
                     key={label}
@@ -235,7 +180,13 @@ function NavList() {
 
 function TopNavbar() {
 
-    const auth = false;
+
+
+
+    const { user, Logout} = useAuthContext()
+ 
+
+
   
 
     const [isNavOpen, setIsNavOpen] = React.useState(false);
@@ -271,7 +222,7 @@ function TopNavbar() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-                {auth ? <ProfileMenu /> : <Link to="/login"><Button>Login</Button></Link>}
+                {user ? <ProfileMenu user={user} Logout={Logout} /> : <Link to="/login"><Button>Login</Button></Link>}
             </div>
             <MobileNav open={isNavOpen} className="overflow-scroll">
                 <NavList />

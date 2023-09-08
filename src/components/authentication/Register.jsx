@@ -7,11 +7,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import { HandleSignup } from "../../services/AuthService";
 import { useAuthContext } from "../../context/AuthContext";
 
 const Register = () => {
-  const { isRegistered, setIsRegistered } = useAuthContext();
+  const { isRegistered, setIsRegistered, HandleSignup } = useAuthContext();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
