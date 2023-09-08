@@ -6,23 +6,20 @@ import {
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { FirebaseApp } from "../config/firebase";
 
-
 const auth = getAuth(FirebaseApp);
 const db = getFirestore(FirebaseApp);
 
 const formData = collection(db, "user");
 
 const addUser = async (email, name, userId) => {
+    const data = await addDoc(formData, {
+        email: email,
 
-        const data = await addDoc(formData, {
-            email: email,
-         
-            name: name,
-            userId: userId,
-        });
+        name: name,
+        userId: userId,
+    });
 
-        console.log("User added to Firestore:", data);
-  
+    console.log("User added to Firestore:", data);
 };
 
 export const HandleSignup = async (email, password, name, setIsRegistered) => {
@@ -40,11 +37,11 @@ export const HandleSignup = async (email, password, name, setIsRegistered) => {
 
         const user = userCredential.user;
         console.log(user);
-        setIsRegistered(true);
+        // setIsRegistered(true);
+        window.location.replace("/");
         addUser(user.email, name, user.uid);
     } catch (error) {
         // setAuthError(error);
         console.error("Error signing up:", error.message);
     }
 };
-
