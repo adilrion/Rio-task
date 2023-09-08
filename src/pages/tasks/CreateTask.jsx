@@ -18,7 +18,12 @@ export function CreateTask() {
     responsiblePerson: '',
     createdBy: '',
     deadline: '',
+    status: 'pending',
+    careatedDate: new Date()
+
   });
+
+  console.log(formData)
 
   // Handle form input changes
   const handleInputChange = (e) => {

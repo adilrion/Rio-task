@@ -13,18 +13,18 @@ import {
     Alert,
 } from "@material-tailwind/react";
 import {
-    PresentationChartBarIcon,
+    ChartBarIcon as PresentationChartBarIcon,
     ShoppingBagIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
+    UserIcon as UserCircleIcon,
+    CogIcon as Cog6ToothIcon,
     InboxIcon,
-    PowerIcon,
-} from "@heroicons/react/24/solid";
+    LogoutIcon as PowerIcon,
+} from "@heroicons/react/solid";
 import {
     ChevronRightIcon,
     ChevronDownIcon,
-    CubeTransparentIcon,
-} from "@heroicons/react/24/outline";
+    CubeIcon as CubeTransparentIcon,
+} from "@heroicons/react/solid";
 
 export function Sidebar() {
     const [open, setOpen] = React.useState(0);

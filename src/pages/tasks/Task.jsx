@@ -1,8 +1,9 @@
 import {
-    MagnifyingGlassIcon,
-    ChevronUpDownIcon,
-} from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+    SearchIcon as MagnifyingGlassIcon,
+    ChevronUpIcon as ChevronUpDownIcon,
+    PencilIcon,
+    UserAddIcon as UserPlusIcon,
+} from "@heroicons/react/solid";
 import {
     Card,
     CardHeader,

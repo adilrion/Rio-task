@@ -19,6 +19,7 @@ const taskReducer = (state, action) => {
 
 // Add functions for saving and loading data to/from local storage
 const saveTasksToLocalStorage = (tasks) => {
+    console.log(tasks)
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
@@ -27,10 +28,14 @@ const loadTasksFromLocalStorage = () => {
     return tasks;
 };
 
+
+
 // Create a custom hook to access the context
 export const useTaskContext = () => {
     return useContext(createTaskContext);
 };
+
+
 
 export const TaskContextProvider = ({ children }) => {
 
@@ -38,6 +43,8 @@ export const TaskContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(taskReducer, {
         tasks: loadTasksFromLocalStorage(), // Load tasks from local storage initially
     });
+
+    console.log(state)
 
     // Update the local storage whenever tasks change
     useEffect(() => {

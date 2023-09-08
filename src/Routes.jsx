@@ -6,12 +6,12 @@ import { TaskDetails } from './pages/tasks/TaskDetails'
 import { CreateTask } from './pages/tasks/CreateTask'
 import { Error } from './pages/error/Error'
 import { Login } from './components/authentication/Login'
-import { Register } from './components/authentication/Register'
+import Register from './components/authentication/Register'
 
 
 export const RouterPage = () => {
     return (
-        <>
+    
 
             <Routes>
                 <Route path="login" element={<Login />} />
@@ -26,6 +26,6 @@ export const RouterPage = () => {
                 </Route>
                     <Route path="/*" element={<Error />} />
             </Routes>
-        </>
+      
     )
 }

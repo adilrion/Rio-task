@@ -1,16 +1,19 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 import {
-    Bars2Icon,
+    UserIcon as UserCircleIcon,
+    CogIcon as Cog6ToothIcon,
+    InboxIcon as InboxArrowDownIcon,
+    QuestionMarkCircleIcon as LifebuoyIcon,
+    LogoutIcon as PowerIcon,
+    LightningBoltIcon as RocketLaunchIcon,
+    ViewGridIcon as Square3Stack3DIcon,
+    MenuAlt2Icon as Bars2Icon,
+    CubeIcon as CubeTransparentIcon,
+    CodeIcon as CodeBracketSquareIcon,
     ChevronDownIcon,
-    CodeBracketSquareIcon,
-    Cog6ToothIcon,
-    CubeTransparentIcon,
-    InboxArrowDownIcon,
-    LifebuoyIcon,
-    PowerIcon,
-    RocketLaunchIcon,
-    Square3Stack3DIcon,
-    UserCircleIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/solid";
 import {
     Avatar,
     Button,
@@ -24,13 +27,9 @@ import {
     Navbar,
     Typography,
 } from "@material-tailwind/react";
-import React from "react";
 import { NotificationsMenu } from "../notifications/Notification";
-import { Link } from "react-router-dom";
-import { useAuthContext } from "../../context/AuthContext";
-// import Sidebar from "./Sidebar";
 
-// profile menu component
+// Profile menu items
 const profileMenuItems = [
     {
         label: "My Profile",
@@ -60,12 +59,8 @@ function ProfileMenu() {
     const closeMenu = () => setIsMenuOpen(false);
 
     return (
-
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
-
             <MenuHandler>
-
-
                 <Button
                     variant="text"
                     color="blue-gray"
@@ -83,12 +78,8 @@ function ProfileMenu() {
                         className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
                             }`}
                     />
-
-
                 </Button>
-
             </MenuHandler>
-
             <MenuList className="p-1">
                 {profileMenuItems.map(({ label, icon }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
@@ -97,8 +88,8 @@ function ProfileMenu() {
                             key={label}
                             onClick={closeMenu}
                             className={`flex items-center gap-2 rounded ${isLastItem
-                                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                : ""
+                                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                                    : ""
                                 }`}
                         >
                             {React.createElement(icon, {
@@ -121,7 +112,7 @@ function ProfileMenu() {
     );
 }
 
-// nav list menu
+// Nav list menu items
 const navListMenuItems = [
     {
         title: "@material-tailwind/html",
@@ -160,7 +151,12 @@ function NavListMenu() {
         <React.Fragment>
             <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
                 <MenuHandler>
-                    <Typography as="a" href="#" variant="small" className="font-normal">
+                    <Typography
+                        as="a"
+                        href="#"
+                        variant="small"
+                        className="font-normal"
+                    >
                         <MenuItem className="hidden items-center gap-2 text-blue-gray-900 lg:flex lg:rounded-full">
                             <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
                             <ChevronDownIcon
@@ -191,12 +187,11 @@ function NavListMenu() {
             <ul className="ml-6 flex w-full flex-col gap-1 lg:hidden">
                 {renderItems}
             </ul>
-
         </React.Fragment>
     );
 }
 
-// nav list component
+// Nav list items
 const navListItems = [
     {
         label: "Account",
@@ -212,7 +207,7 @@ const navListItems = [
     },
 ];
 
-export default function NavList() {
+function NavList() {
     return (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
             <NavListMenu />
@@ -225,7 +220,6 @@ export default function NavList() {
                     color="blue-gray"
                     className="font-normal"
                 >
-
                     <Link to={`/${label?.toLowerCase()}`}>
                         <MenuItem className="flex items-center gap-2 lg:rounded-full">
                             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
@@ -234,16 +228,15 @@ export default function NavList() {
                     </Link>
                 </Typography>
             ))}
-
             <NotificationsMenu />
         </ul>
     );
 }
 
-export function TopNavbar() {
+function TopNavbar() {
 
-
-    const { auth } = useAuthContext();
+    const auth = false;
+  
 
     const [isNavOpen, setIsNavOpen] = React.useState(false);
 
@@ -252,15 +245,13 @@ export function TopNavbar() {
     React.useEffect(() => {
         window.addEventListener(
             "resize",
-            () => window.innerWidth >= 960 && setIsNavOpen(false),
+            () => window.innerWidth >= 960 && setIsNavOpen(false)
         );
     }, []);
 
     return (
         <Navbar className="rounded-none h-max max-w-full shadow-sm">
             <div className="relative mx-auto flex items-center justify-between text-blue-gray-900">
-
-                {/* <Sidebar/> */}
                 <Typography
                     as="a"
                     href="#"
@@ -268,11 +259,9 @@ export function TopNavbar() {
                 >
                     Rio Task
                 </Typography>
-
                 <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
                     <NavList />
                 </div>
-
                 <IconButton
                     size="sm"
                     color="blue-gray"
@@ -282,20 +271,13 @@ export function TopNavbar() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-                {
-
-                    auth ? <ProfileMenu /> : (
-                        <Link to='/login' className="float-right"><Button>Login</Button></Link>
-                    )
-
-                }
-
-
+                {auth ? <ProfileMenu /> : <Link to="/login"><Button>Login</Button></Link>}
             </div>
-
             <MobileNav open={isNavOpen} className="overflow-scroll">
                 <NavList />
             </MobileNav>
         </Navbar>
     );
 }
+
+export default TopNavbar;
