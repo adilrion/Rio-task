@@ -21,7 +21,7 @@ export const RouterPage = () => {
                     <Route path="home" element={<Home />} />
                     <Route path="task" element={<Task />} />
                     <Route path="create-task" element={<CreateTask />} />
-                    <Route path="task-details" element={<TaskDetails />} />
+                    <Route path="task-details/:id" element={<TaskDetails />} />
 
                 </Route>
                     <Route path="/*" element={<Error />} />

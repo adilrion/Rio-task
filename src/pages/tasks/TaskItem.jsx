@@ -7,6 +7,7 @@ import {
   Avatar,
   Tooltip,
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 export function TaskItem({ data, bg }) {
   console.log(data)
@@ -22,10 +23,10 @@ export function TaskItem({ data, bg }) {
       </CardHeader>
       <CardBody className="p-3 relative">
         <div className={`w-5 h-5 ${bg} rounded-full absolute right-2 top-2`}></div>
-
+<Link to={`/task-details/${data?.id}`}>
         <Typography variant="h6" color="blue-gray">
          {data?.title}
-        </Typography>
+          </Typography></Link>
         <Typography variant="paragraph" color="gray" className="mt-2 font-normal line-clamp-[1">
           {data?.description}
         </Typography>
