@@ -7,6 +7,7 @@ import { CreateTask } from './pages/tasks/CreateTask'
 import { Error } from './pages/error/Error'
 import { Login } from './components/authentication/Login'
 import Register from './components/authentication/Register'
+import { ProtectedRoute } from './components/authentication/ProtectedRoute'
 
 
 export const RouterPage = () => {
@@ -16,7 +17,12 @@ export const RouterPage = () => {
             <Routes>
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
-                <Route path="/" element={<Home />} >
+            <Route path="/" element={
+                <ProtectedRoute>
+                <Home />
+                </ProtectedRoute>
+            
+            } >
 
                     <Route path="home" element={<Home />} />
                     <Route path="task" element={<Task />} />

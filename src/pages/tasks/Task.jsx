@@ -146,63 +146,51 @@ export function Task() {
                     </div>
                 </div>
             </CardHeader>
-            <CardBody className="overflow-x-auto p-5 grid grid-cols-3 gap-3">
-                <div className="col-span-1">
+            <CardBody className="w-full p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="col-span-1 min-w-[200px]">
                     <div className="bg-orange-500 flex justify-center py-3 rounded">
-                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                        <h1 className="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
                             Pending
                         </h1>
                     </div>
-
                     <div className="">
-
-                        {
-                            state?.tasks?.filter((task) => task.status === 'pending').map((data, index) => (
+                        {state?.tasks
+                            ?.filter((task) => task.status === 'pending')
+                            .map((data, index) => (
                                 <TaskItem key={index} data={data} bg={`bg-orange-500`} />
-                            ))
-                        }
-
+                            ))}
                     </div>
-
                 </div>
-                <div className="col-span-1">
+                <div className="col-span-1 min-w-[200px]">
                     <div className="bg-teal-500 flex justify-center py-3 rounded">
-                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                        <h1 className="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
                             Progress
                         </h1>
                     </div>
-
                     <div className="">
-
-                        {
-                            state?.tasks?.filter((task) => task.status === 'progress').map((data, index) => (
+                        {state?.tasks
+                            ?.filter((task) => task.status === 'progress')
+                            .map((data, index) => (
                                 <TaskItem key={index} data={data} bg={`bg-teal-500`} />
-                            ))
-                        }
-
+                            ))}
                     </div>
-
                 </div>
-                <div className="col-span-1">
+                <div className="col-span-1 min-w-[200px]">
                     <div className="bg-[#B1B2FF] flex justify-center py-3 rounded">
-                        <h1 class="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
+                        <h1 className="block font-sans text-md font-medium leading-tight tracking-normal text-white antialiased">
                             Complete
                         </h1>
                     </div>
-
                     <div className="">
-
-                        {
-                            state?.tasks?.filter((task) => task.status === 'complete').map((data, index) => (
+                        {state?.tasks
+                            ?.filter((task) => task.status === 'complete')
+                            .map((data, index) => (
                                 <TaskItem key={index} data={data} bg={`bg-[#B1B2FF]`} />
-                            ))
-                        }
-
+                            ))}
                     </div>
-
                 </div>
-
             </CardBody>
+
             <CardFooter className="p-5 flex items-center justify-between border-t border-blue-gray-50 ">
                 <Typography variant="small" color="blue-gray" className="font-normal">
                     Page 1 of 10

@@ -61,12 +61,13 @@ export const AuthContext = ({ children }) => {
             );
 
             // Set the user's display name
-            await updateProfile(userCredential.user, {
+            await updateProfile(userCredential?.user, {
                 displayName: name,
             });
 
-            const newUser = userCredential.user;
+            const newUser = userCredential?.user;
             setIsRegistered(true);
+            setUser(newUser)
             addUser(newUser.email, name, newUser.uid);
             navigate("/"); // Use navigate to go to the homepage
         } catch (error) {
@@ -83,6 +84,7 @@ export const AuthContext = ({ children }) => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
             if (userCredential) {
+                setUser(userCredential?.user)
                 navigate("/");
             }
         } catch (error) {
