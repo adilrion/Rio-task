@@ -6,12 +6,39 @@ import {
   Typography,
   Avatar,
   Tooltip,
+  MenuHandler,
+  Menu,
+  MenuItem,
+  MenuList,
+  Button
 } from "@material-tailwind/react";
+
 import { Link } from "react-router-dom";
 import { formatDateForTaskList } from "../../utils/Helper";
+import { useTaskContext } from "../../context/TaskContext";
 
 export function TaskItem({ data, bg }) {
-  console.log(data)
+
+  const {updateTask } = useTaskContext();
+
+  // Function to update and save the "status" value to local storage
+
+
+
+  // Function to handle updating the status when a link is clicked
+  const handleUpdateStatus = (taskId, newStatus) => {
+ try {
+   const updatedTask = {
+     status: newStatus, // Update the status property
+   };
+   updateTask(taskId, updatedTask);
+ } catch (error) {
+  console.log(error)
+ }
+    
+  };
+
+
   return (
     <Card className="max-w-[24rem] overflow-hidden p-0 rounded mt-3">
       <CardHeader
@@ -23,7 +50,35 @@ export function TaskItem({ data, bg }) {
         
       </CardHeader>
       <CardBody className="p-3 relative">
-        <div className={`w-5 h-5 ${bg} rounded-full absolute right-2 top-2`}></div>
+        <div className={` ${bg} rounded-full `}>
+
+          <Menu>
+            <MenuHandler >
+              <div className={`w-5 h-5 absolute right-2 top-2 rounded-full text-white ${data?.status == 'pending' && 'bg-orange-500' || data?.status == 'progress' && 'bg-teal-500' || data?.status == 'complete' && 'bg-[#B1B2FF]'} `}></div>
+            </MenuHandler>
+            <MenuList className=''>
+              <MenuItem
+                className="hover:bg-orange-500 hover:text-white"
+                onClick={() => handleUpdateStatus(data.id, 'pending')}
+              >
+                Pending
+              </MenuItem>
+              <MenuItem
+                className="hover:bg-teal-500 hover:text-white"
+                onClick={() => handleUpdateStatus(data.id, 'progress')}
+              >
+                Progress
+              </MenuItem>
+              <MenuItem
+                className="hover:bg-[#B1B2FF] hover:text-white"
+                onClick={() => handleUpdateStatus(data.id, 'complete')}
+              >
+                Complete
+              </MenuItem>
+            </MenuList>
+          </Menu>
+
+        </div>
 <Link to={`/task-details/${data?.id}`}>
         <Typography variant="h6" color="blue-gray">
          {data?.title}

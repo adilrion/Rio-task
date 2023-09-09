@@ -8,9 +8,11 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { useTaskContext } from '../../context/TaskContext';
+import { useNavigate } from 'react-router-dom';
 
 export function CreateTask() {
 
+  const navigate = useNavigate();
   
   const { dispatch } = useTaskContext();
   // Define state variables for form inputs
@@ -52,7 +54,7 @@ export function CreateTask() {
       createdBy: '',
       deadline: '',
     });
-    
+    navigate("/")
   };
 
   return (

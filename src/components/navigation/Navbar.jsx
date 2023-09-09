@@ -100,7 +100,7 @@ function ProfileMenu({ user, Logout }) {
                         Lorem ipsum dolor sit amet.
                     </Typography>
                 </div>
-                {profileMenuItems.map(({ label, icon }, key) => {
+                {profileMenuItems.map(({ label, icon}, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
                     return (
                         <MenuItem
@@ -133,21 +133,18 @@ function ProfileMenu({ user, Logout }) {
     );
 }
 
-// Nav list menu items
-
 
 // Nav list items
 const navListItems = [
+ 
     {
-        label: "Account",
-        icon: UserCircleIcon,
-    },
-    {
-        label: "Blocks",
+        label: "Task",
+        to: "task",
         icon: CubeTransparentIcon,
     },
     {
-        label: "Task",
+        label: "New Task",
+        to: "create-task",
         icon: CodeBracketSquareIcon,
     },
 ];
@@ -156,7 +153,7 @@ function NavList() {
     return (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
           
-            {navListItems.map(({ label, icon }, key) => (
+            {navListItems.map(({ label, to, icon }, key) => (
                 <Typography
                     key={label}
                     as="a"
@@ -165,7 +162,7 @@ function NavList() {
                     color="blue-gray"
                     className="font-normal"
                 >
-                    <Link to={`/${label?.toLowerCase()}`}>
+                    <Link to={`/${to}`}>
                         <MenuItem className="flex items-center gap-2 lg:rounded-full">
                             {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
                             {label}
@@ -173,7 +170,7 @@ function NavList() {
                     </Link>
                 </Typography>
             ))}
-            <NotificationsMenu />
+           
         </ul>
     );
 }

@@ -9,33 +9,30 @@ import {
   Typography
 } from "@material-tailwind/react";
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTaskContext } from '../../context/TaskContext';
 import { formatDate } from '../../utils/Helper';
 
 
 export const TaskDetails = () => {
-
+  const navigate = useNavigate();
   const route = useParams();
-  const { state, dispatch } = useTaskContext();
+  const { state, updateTask } = useTaskContext();
   const filtered = state?.tasks.filter((task) => task?.id == route?.id)[0];
 
-  // Function to update and save the "status" value to local storage
-  const handleStatusChange = (newStatus) => {
-    // Update the "status" property of the filtered task
-    const updatedTask = { ...filtered, status: newStatus };
+ 
 
-    // Create a copy of the tasks array with the updated task
-    const updatedTasks = state.tasks.map((task) =>
-      task.id === updatedTask.id ? updatedTask : task
-    );
 
-    // Dispatch an action to update the tasks in the context
-    dispatch({ type: 'UPDATE_TASKS', payload: updatedTasks });
-
-    // Save the updated tasks to local storage
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  // Function to handle updating the status when a link is clicked
+  const handleUpdateStatus = (taskId, newStatus) => {
+    const updatedTask = {
+      status: newStatus, // Update the status property
+    };
+    updateTask(taskId, updatedTask);
+    navigate("/");
   };
+
+  
 
   return (
     <>
@@ -122,19 +119,19 @@ export const TaskDetails = () => {
                 <MenuList className=''>
                   <MenuItem
                     className="hover:bg-orange-500 hover:text-white"
-                    onClick={() => handleStatusChange('pending')}
+                    onClick={() => handleUpdateStatus(filtered.id, 'pending')}
                   >
                     Pending
                   </MenuItem>
                   <MenuItem
                     className="hover:bg-teal-500 hover:text-white"
-                    onClick={() => handleStatusChange('progress')}
+                    onClick={() => handleUpdateStatus(filtered.id, 'progress')}
                   >
                     Progress
                   </MenuItem>
                   <MenuItem
                     className="hover:bg-[#B1B2FF] hover:text-white"
-                    onClick={() => handleStatusChange('complete')}
+                    onClick={() => handleUpdateStatus(filtered.id, 'complete')}
                   >
                     Complete
                   </MenuItem>

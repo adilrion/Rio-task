@@ -100,7 +100,7 @@ export function Task() {
 
 
     return (
-        <Card className="h-full w-full bg-[#EEF1FF]">
+        <Card className="h-full w-full bg-[#EEF1FF] rounded-none">
             <CardHeader floated={false} shadow={false} className="rounded p-5">
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>

@@ -17,10 +17,10 @@ const Home = () => {
             <TopNavbar />
 
             <div className="grid grid-cols-12 ">
-                <div className="col-span-3 relative">
+                {/* <div className="col-span-3 relative">
                     <Sidebar />
-                </div>
-                <div className="col-span-9 ">
+                </div> */}
+                <div className="col-span-12 lg:px-24">
 
                     {path?.pathname === '/' && <Task />}
                     <Outlet />
