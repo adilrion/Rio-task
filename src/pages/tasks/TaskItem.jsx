@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { formatDateForTaskList } from "../../utils/Helper";
 
 export function TaskItem({ data, bg }) {
   console.log(data)
@@ -52,7 +53,7 @@ export function TaskItem({ data, bg }) {
             />
           </Tooltip>
         </div>
-        <Typography variant="small" className="font-normal">January 10</Typography>
+        <Typography variant="small" className="font-normal col-span-9 text-deep-orange-600">{formatDateForTaskList(data?.deadline)}</Typography>
       </CardFooter>
     </Card>
   );

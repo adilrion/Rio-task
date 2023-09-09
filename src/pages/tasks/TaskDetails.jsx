@@ -1,34 +1,45 @@
-import { useParams } from 'react-router-dom'
-import React, { useState } from 'react';
 import {
-  Card,
-  Input,
-  Button,
-  Typography,
-  Textarea,
-  IconButton,
-  CardFooter,
-  Tooltip,
   Avatar,
+  Button,
+  Card,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Typography
 } from "@material-tailwind/react";
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useTaskContext } from '../../context/TaskContext';
 import { formatDate } from '../../utils/Helper';
 
 
 export const TaskDetails = () => {
 
-
   const route = useParams();
-  console.log(route.id)
-
-  const { state } = useTaskContext()
-console.log(state.tasks)
+  const { state, dispatch } = useTaskContext();
   const filtered = state?.tasks.filter((task) => task?.id == route?.id)[0];
-console.log(filtered)
+
+  // Function to update and save the "status" value to local storage
+  const handleStatusChange = (newStatus) => {
+    // Update the "status" property of the filtered task
+    const updatedTask = { ...filtered, status: newStatus };
+
+    // Create a copy of the tasks array with the updated task
+    const updatedTasks = state.tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+
+    // Dispatch an action to update the tasks in the context
+    dispatch({ type: 'UPDATE_TASKS', payload: updatedTasks });
+
+    // Save the updated tasks to local storage
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  };
 
   return (
     <>
-    
+
       <Card color="transparent" shadow={false} className="bg-[#EEF1FF] p-5 rounded-none">
         <Typography variant="h4" color="blue-gray" className="pl-2 pb-2">
           {filtered?.title}
@@ -37,7 +48,7 @@ console.log(filtered)
         <div className="bg-[#fbfcff] p-5 rounded-md">
           <form >
 
-  
+
 
             <Typography variant="paragraph" className='pb-8'>{filtered?.description}</Typography>
 
@@ -78,32 +89,58 @@ console.log(filtered)
                       />
                       <span>Wasif Jafor</span>
                     </Button>
-                   
-               
-                     
-                
+
+
+
+
                   </div>
                 </div>
               </div>
               <div className="py-2 grid grid-cols-12 items-center border-b border-gray-400">
                 <h1 className="col-span-3">Created by</h1>
                 <Typography variant="small" className="font-normal col-span-9">{filtered?.createdBy}</Typography>
-           
+
               </div>
               <div className="py-2 grid grid-cols-12 items-center border-b  border-gray-400">
                 <h1 className="col-span-3">Assigned date</h1>
-                <Typography variant="small" className="font-normal col-span-9">{formatDate(filtered?.careatedDate) }</Typography>
+                <Typography variant="small" className="font-normal col-span-9">{formatDate(filtered?.careatedDate)}</Typography>
 
               </div>
               <div className="py-2 grid grid-cols-12 items-center border-b ">
                 <h1 className="col-span-3">Deadline</h1>
-                <Typography variant="small" className="font-normal col-span-9">{formatDate(filtered?.deadline) }</Typography>
+                <Typography variant="small" className="font-normal col-span-9 text-deep-orange-600">{formatDate(filtered?.deadline)}</Typography>
 
               </div>
             </div>
 
             <div className="flex w-full justify-between py-1.5">
-              <div className={`w-fit h-fit p-2 capitalize px-4 ${filtered?.status == 'pending' && 'bg-orange-500' || filtered?.status == 'progress' && 'bg-teal-500' || filtered?.status == 'complete' && 'bg-[#B1B2FF]'} rounded-full text-white`}>{filtered?.status}</div>
+
+              <Menu>
+                <MenuHandler >
+                  <Button className={`w-fit h-fit p-2 capitalize px-4 ${filtered?.status == 'pending' && 'bg-orange-500' || filtered?.status == 'progress' && 'bg-teal-500' || filtered?.status == 'complete' && 'bg-[#B1B2FF]'} rounded-full text-white`}>{filtered?.status}</Button>
+                </MenuHandler>
+                <MenuList className=''>
+                  <MenuItem
+                    className="hover:bg-orange-500 hover:text-white"
+                    onClick={() => handleStatusChange('pending')}
+                  >
+                    Pending
+                  </MenuItem>
+                  <MenuItem
+                    className="hover:bg-teal-500 hover:text-white"
+                    onClick={() => handleStatusChange('progress')}
+                  >
+                    Progress
+                  </MenuItem>
+                  <MenuItem
+                    className="hover:bg-[#B1B2FF] hover:text-white"
+                    onClick={() => handleStatusChange('complete')}
+                  >
+                    Complete
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+
 
               <div className="flex gap-2">
                 <Button size="sm" color="red" variant="text" className="rounded-md">
@@ -117,7 +154,7 @@ console.log(filtered)
           </form>
         </div>
       </Card>
-    
+
     </>
   )
 }

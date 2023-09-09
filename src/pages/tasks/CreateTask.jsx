@@ -20,7 +20,7 @@ export function CreateTask() {
     responsiblePerson: '',
     createdBy: '',
     deadline: '',
-    status: 'complete',
+    status: 'pending',
     careatedDate: new Date(),
     id: Math.floor(Math.random() * 100000000000000)
 
