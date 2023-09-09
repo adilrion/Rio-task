@@ -1,15 +1,9 @@
-import {
-    createUserWithEmailAndPassword,
-    getAuth,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signOut,
-    updateProfile
-} from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
-import { FirebaseApp } from "../config/firebase";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { FirebaseApp } from "../config/firebase"; // Import your Firebase configuration
+
 
 const authContext = createContext();
 
@@ -19,34 +13,34 @@ export const useAuthContext = () => {
 };
 
 
-
 const auth = getAuth(FirebaseApp);
 const db = getFirestore(FirebaseApp);
-
 const formData = collection(db, "user");
 
-
-
+// Function to add a user to Firestore
 const addUser = async (email, name, userId) => {
-    const data = await addDoc(formData, {
-        email: email,
-        name: name,
-        userId: userId,
-    });
-
-    console.log("User added to Firestore:", data);
+    try {
+        const data = await addDoc(formData, {
+            email: email,
+            name: name,
+            userId: userId,
+        });
+        console.log("User added to Firestore:", data);
+    } catch (error) {
+        console.error("Error adding user to Firestore:", error);
+    }
 };
 
 
 
 
 
-
 export const AuthContext = ({ children }) => {
-  
+
     const [isRegistered, setIsRegistered] = useState(false);
     const [user, setUser] = useState(null)
     const [authError, setAuthError] = useState(null)
+    const [userData, setUserDate] = useState(null)
     const navigate = useNavigate();
 
 
@@ -131,7 +125,33 @@ export const AuthContext = ({ children }) => {
             });
     };
 
+
+    
+
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const querySnapshot = await getDocs(formData);
+                const userDataArray = [];
+                querySnapshot.forEach((doc) => {
+                    userDataArray.push(doc.data());
+                });
+                setUserDate(userDataArray);
+                console.log(userDataArray);
+            } catch (error) {
+                console.error('Error fetching documents:', error);
+            }
+        };
+
+        getUsers();
+    }, []);
+
+
+
+
+
+
     return (
-        <authContext.Provider value={{ isRegistered, setIsRegistered, user, setUser, HandleSignup, Logout, SignIn, auth }}>{children}</authContext.Provider>
+        <authContext.Provider value={{ isRegistered, setIsRegistered, user, setUser, HandleSignup, Logout, SignIn, auth, userData }}>{children}</authContext.Provider>
     )
 }

@@ -29,7 +29,7 @@ export const TaskDetails = () => {
       status: newStatus, // Update the status property
     };
     updateTask(taskId, updatedTask);
-    navigate("/");
+   
   };
 
   

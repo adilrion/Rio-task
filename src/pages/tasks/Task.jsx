@@ -94,9 +94,9 @@ const TABLE_ROWS = [
 export function Task() {
 
 
-    const { state } = useTaskContext();
+    const { state, userData } = useTaskContext();
+ 
 
-    const filteredTasks = state.tasks.filter((task) => task.status === 'desiredStatus');
 
 
     return (

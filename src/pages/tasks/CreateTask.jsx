@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
-  Input,
+
   Button,
   Typography,
   Textarea,
   IconButton,
+
+  Avatar,
 } from "@material-tailwind/react";
 import { useTaskContext } from '../../context/TaskContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../context/AuthContext';
 
 export function CreateTask() {
 
+  const { userData } = useAuthContext();
+  const [filterUserData, setFilterUserData] = useState([])
   const navigate = useNavigate();
+
   
   const { dispatch } = useTaskContext();
   // Define state variables for form inputs
@@ -28,7 +34,6 @@ export function CreateTask() {
 
   });
 
-  console.log(formData)
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -56,6 +61,25 @@ export function CreateTask() {
     });
     navigate("/")
   };
+
+
+  useEffect(() => {
+    if (userData) {
+      const filteredUsers = userData.filter(
+        (user) =>
+          user?.email?.includes(formData.responsiblePerson) || user?.name?.includes(formData.responsiblePerson)
+      );
+      setFilterUserData(filteredUsers);
+    }
+    if (formData.responsiblePerson == '') {
+      setFilterUserData([])
+    }
+  }, [formData.responsiblePerson]);
+
+
+    // Filter userData based on input value
+ 
+
 
   return (
     <Card color="transparent" shadow={false} className="bg-[#EEF1FF] p-5 rounded-none">
@@ -88,13 +112,40 @@ export function CreateTask() {
           <div className="bg-[#EEF1FF] px-2">
             <div className="py-2 grid grid-cols-12 items-center border-b border-gray-400">
               <h1 className="col-span-3">Responsible Person</h1>
-              <input
-                type="text"
-                name="responsiblePerson"
-                value={formData.responsiblePerson}
-                onChange={handleInputChange}
-                className="col-span-9 focus:outline-none py-2 px-2"
-              />
+              
+           
+              <div className='col-span-9 relative'>
+
+                <input
+                  type="text"
+                  name="responsiblePerson"
+                  value={formData.responsiblePerson}
+                  onChange={handleInputChange}
+                  className="focus:outline-none py-2 px-2 w-full"
+                ></input>
+                <div className="max-h-72 w-[250px] overflow-y-scroll absolute bg-[#D2DAFF] shadow">
+                  {
+                    filterUserData?.map((data, index) => (
+                      <Button
+                        size="sm"
+                        color="gray"
+                        className="min-w-fit bg-opacity-0 shadow-none text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs text-start border-b border-gray-500 capitalize rounded-none"
+                        ripple={false}
+                        fullWidth={true}
+                      >
+                        <Avatar
+                          size="xs"
+                          variant="circular"
+                          alt="natali craig"
+                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                          className="hover:z-10 mr-1 rounded-full"
+                        />
+                        <span>{ data?.name}</span>
+                      </Button>
+                    ))
+                  }
+                </div>
+               </div>
             </div>
             <div className="py-2 grid grid-cols-12 items-center border-b border-gray-400">
               <h1 className="col-span-3">Created by</h1>
