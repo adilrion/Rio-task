@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { useNavigate } from "react-router-dom";
 
-const createTaskContext = createContext();
+const taskContext = createContext();
 
 // Define your initial state
 const initialState = {
@@ -26,11 +25,12 @@ const taskReducer = (state, action) => {
     }
 };
 
-// Add functions for saving and loading data to/from local storage
+// Function to save tasks to local storage
 const saveTasksToLocalStorage = (tasks) => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
+// Function to load tasks from local storage
 const loadTasksFromLocalStorage = () => {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     return tasks;
@@ -38,11 +38,10 @@ const loadTasksFromLocalStorage = () => {
 
 // Create a custom hook to access the context
 export const useTaskContext = () => {
-    return useContext(createTaskContext);
+    return useContext(taskContext);
 };
 
 export const TaskContextProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(taskReducer, {
         tasks: loadTasksFromLocalStorage(), // Load tasks from local storage initially
     });
@@ -64,8 +63,8 @@ export const TaskContextProvider = ({ children }) => {
     }, [state.tasks]);
 
     return (
-        <createTaskContext.Provider value={{ state, dispatch, updateTask }}>
+        <taskContext.Provider value={{ state, dispatch, updateTask }}>
             {children}
-        </createTaskContext.Provider>
+        </taskContext.Provider>
     );
 };

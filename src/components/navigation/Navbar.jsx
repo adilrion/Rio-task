@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -18,16 +18,15 @@ import {
     Avatar,
     Button,
     Card,
+    Collapse,
     IconButton,
     Menu,
     MenuHandler,
     MenuItem,
     MenuList,
-    MobileNav,
     Navbar,
     Typography,
 } from "@material-tailwind/react";
-import { NotificationsMenu } from "../notifications/Notification";
 import { useAuthContext } from "../../context/AuthContext";
 
 // Profile menu items
@@ -82,8 +81,6 @@ function ProfileMenu({ user, Logout }) {
                 </Button>
             </MenuHandler>
             <MenuList className="p-1">
-
-
                 <div className="w-full flex justify-center flex-col items-center p-5">
                     <Avatar
                         variant="circular"
@@ -93,14 +90,13 @@ function ProfileMenu({ user, Logout }) {
                         src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
                     />
                     <Typography variant="h6" color="blue" textGradient>
-                       {user?.displayName}
+                        {user?.displayName}
                     </Typography>
-                   
-                    <Typography variant="p" color="blue-gray" textGradient >
+                    <Typography variant="paragraph" color="blue-gray" textGradient>
                         Lorem ipsum dolor sit amet.
                     </Typography>
                 </div>
-                {profileMenuItems.map(({ label, icon}, key) => {
+                {profileMenuItems.map(({ label, icon }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
                     return (
                         <MenuItem
@@ -116,14 +112,13 @@ function ProfileMenu({ user, Logout }) {
                                 strokeWidth: 2,
                             })}
                             <Typography
-                                as={isLastItem ? 'button' : 'span'}
+                                as={isLastItem ? "button" : "span"}
                                 variant="small"
                                 className="font-normal"
                                 color={isLastItem ? "red" : "inherit"}
                                 onClick={isLastItem ? () => Logout() : null}
                             >
-                               
-                                {label }
+                                {label}
                             </Typography>
                         </MenuItem>
                     );
@@ -133,10 +128,8 @@ function ProfileMenu({ user, Logout }) {
     );
 }
 
-
 // Nav list items
 const navListItems = [
- 
     {
         label: "Task",
         to: "task",
@@ -152,11 +145,10 @@ const navListItems = [
 function NavList() {
     return (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-          
             {navListItems.map(({ label, to, icon }, key) => (
                 <Typography
                     key={label}
-                    as="a"
+                    
                     href="#"
                     variant="small"
                     color="blue-gray"
@@ -170,27 +162,18 @@ function NavList() {
                     </Link>
                 </Typography>
             ))}
-           
         </ul>
     );
 }
 
 function TopNavbar() {
+    const { user, Logout } = useAuthContext();
 
-
-
-
-    const { user, Logout} = useAuthContext()
- 
-
-
-  
-
-    const [isNavOpen, setIsNavOpen] = React.useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(false);
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
-    React.useEffect(() => {
+    useEffect(() => {
         window.addEventListener(
             "resize",
             () => window.innerWidth >= 960 && setIsNavOpen(false)
@@ -219,11 +202,17 @@ function TopNavbar() {
                 >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
-                {user ? <ProfileMenu user={user} Logout={Logout} /> : <Link to="/login"><Button>Login</Button></Link>}
+                {user ? (
+                    <ProfileMenu user={user} Logout={Logout} />
+                ) : (
+                    <Link to="/login">
+                        <Button>Login</Button>
+                    </Link>
+                )}
             </div>
-            <MobileNav open={isNavOpen} className="overflow-scroll">
+            <Collapse open={isNavOpen}>
                 <NavList />
-            </MobileNav>
+            </Collapse>
         </Navbar>
     );
 }

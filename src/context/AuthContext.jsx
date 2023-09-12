@@ -91,7 +91,7 @@ export const AuthContext = ({ children }) => {
             .then(() => {
                 setUser(null);
                 navigate("/login"); // Use navigate to go to the login page
-                console.log('successful log out');
+                
             })
             .catch((error) => {
                 console.error("Error signing out:", error);
@@ -137,7 +137,7 @@ export const AuthContext = ({ children }) => {
                     userDataArray.push(doc.data());
                 });
                 setUserDate(userDataArray);
-                console.log(userDataArray);
+                
             } catch (error) {
                 console.error('Error fetching documents:', error);
             }

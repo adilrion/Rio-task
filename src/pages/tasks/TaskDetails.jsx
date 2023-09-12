@@ -54,39 +54,33 @@ export const TaskDetails = () => {
                 <h1 className="col-span-3">Responsible Person</h1>
                 <div className="flex items-center justify-between p-0 col-span-9">
                   <div className="flex items-center justify-center space-x-3">
-                    <Button
-                      size="sm"
-                      color="gray"
-                      className="min-w-fit bg-opacity-20 text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs  rounded-full capitalize"
-                      ripple={false}
-                      fullWidth={true}
-                    >
-                      <Avatar
-                        size="xs"
-                        variant="circular"
-                        alt="natali craig"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-                        className="hover:z-10 mr-1 rounded-full"
-                      />
-                      <span>Natali </span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      color="gray"
-                      className="min-w-fit bg-opacity-20 text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs  rounded-full capitalize"
-                      ripple={false}
-                      fullWidth={true}
-                    >
-                      <Avatar
-                        size="xs"
-                        variant="circular"
-                        alt="natali craig"
-                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                        className="hover:z-10 mr-1 rounded-full"
-                      />
-                      <span>Wasif Jafor</span>
-                    </Button>
 
+                    {
+                      filtered?.responsiblePerson.length > 0 && (
+                        <div className="flex gap-1">
+                          {filtered?.responsiblePerson.map((person, index) => (
+                            <Button
+                              size="sm"
+                              color="gray"
+                              className="min-w-fit bg-opacity-20 text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs  rounded-full capitalize"
+                              ripple={false}
+                              fullWidth={true}
+                            >
+                              <Avatar
+                                size="xs"
+                                variant="circular"
+                                alt={person?.name}
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjIE9x_0IgzoW3whWyqVDXqK0K1hNxzNf_6meiHJJVTh4z7cz_LLY7aYXo6B-PfxqmYDc&usqp=CAU"
+                                className="hover:z-10 mr-1 rounded-full"
+                              />
+                              <span>Natali </span>
+                            </Button>
+                          ))}
+                        </div>
+                      )
+                    }
+                   
+                    
 
 
 

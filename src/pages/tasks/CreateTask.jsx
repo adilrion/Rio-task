@@ -1,44 +1,40 @@
-import React, { useEffect, useState } from 'react';
 import {
-  Card,
-
-  Button,
-  Typography,
-  Textarea,
-  IconButton,
-
   Avatar,
+  Button,
+  Card,
+  IconButton,
+  Textarea,
+  Typography,
 } from "@material-tailwind/react";
-import { useTaskContext } from '../../context/TaskContext';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../../context/AuthContext';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthContext";
+import { useTaskContext } from "../../context/TaskContext";
+
+// Define the initial form state
+const initialFormData = {
+  title: "",
+  description: "",
+  responsiblePerson: [],
+  createdBy: "",
+  deadline: "",
+  status: "pending",
+  createdDate: new Date(),
+  id: Math.floor(Math.random() * 100000000000000),
+};
 
 export function CreateTask() {
-
   const { userData } = useAuthContext();
-  const [filterUserData, setFilterUserData] = useState([])
   const navigate = useNavigate();
-
-  
   const { dispatch } = useTaskContext();
+
   // Define state variables for form inputs
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    responsiblePerson: '',
-    createdBy: '',
-    deadline: '',
-    status: 'pending',
-    careatedDate: new Date(),
-    id: Math.floor(Math.random() * 100000000000000)
-
-  });
-
+  const [formData, setFormData] = useState(initialFormData);
+  const [filterUserData, setFilterUserData] = useState([]);
+  const [responsiblePersonData, setResponsiblePersonData] = useState([]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
-
-
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -50,36 +46,51 @@ export function CreateTask() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Dispatch an action to add the task to the context
-    dispatch({ type: 'ADD_TASK', payload: formData });
+    dispatch({ type: "ADD_TASK", payload: formData });
     // Reset the form
-    setFormData({
-      title: '',
-      description: '',
-      responsiblePerson: '',
-      createdBy: '',
-      deadline: '',
-    });
-    navigate("/")
+    setFormData(initialFormData);
+    navigate("/");
   };
 
+  // Update the responsible persons in form data
+  const updateResponsiblePersons = (data) => {
+    const dd = responsiblePersonData?.filter((ff) => ff?.email === data?.email);
+    if (!dd || dd.length === 0) {
+      setResponsiblePersonData([...responsiblePersonData, data]);
+      setFormData((prevData) => ({
+        ...prevData,
+        responsiblePerson: [...prevData.responsiblePerson, data],
+      }));
+    } else {
+      // Remove the responsible person
+      const updatedResponsiblePersons = responsiblePersonData.filter(
+        (person) => person.email !== data.email
+      );
+      setResponsiblePersonData(updatedResponsiblePersons);
+      setFormData((prevData) => ({
+        ...prevData,
+        responsiblePerson: prevData.responsiblePerson.filter(
+          (person) => person.email !== data.email
+        ),
+      }));
+    }
+  };
 
   useEffect(() => {
     if (userData) {
-      const filteredUsers = userData.filter(
-        (user) =>
-          user?.email?.includes(formData.responsiblePerson) || user?.name?.includes(formData.responsiblePerson)
+      const filteredUsers = userData.filter((user) =>
+        user?.email?.toLowerCase().includes(formData?.responsible?.toLowerCase()) ||
+        user?.name?.toLowerCase().includes(formData?.responsible?.toLowerCase())
       );
       setFilterUserData(filteredUsers);
     }
-    if (formData.responsiblePerson == '') {
-      setFilterUserData([])
+    if (formData.responsible === "") {
+      setFilterUserData([]);
     }
-  }, [formData.responsiblePerson]);
+  }, [formData?.responsible, userData]);
 
 
-    // Filter userData based on input value
- 
-
+console.log(formData)
 
   return (
     <Card color="transparent" shadow={false} className="bg-[#EEF1FF] p-5 rounded-none">
@@ -89,7 +100,6 @@ export function CreateTask() {
 
       <div className="bg-[#fbfcff] p-5 rounded-md">
         <form onSubmit={handleSubmit}>
-
           <input
             type="text"
             name="title"
@@ -112,40 +122,62 @@ export function CreateTask() {
           <div className="bg-[#EEF1FF] px-2">
             <div className="py-2 grid grid-cols-12 items-center border-b border-gray-400">
               <h1 className="col-span-3">Responsible Person</h1>
-              
-           
-              <div className='col-span-9 relative'>
 
+              <div className="col-span-9 relative">
                 <input
                   type="text"
-                  name="responsiblePerson"
-                  value={formData.responsiblePerson}
+                  name="responsible"
+                  value={formData?.responsible}
                   onChange={handleInputChange}
                   className="focus:outline-none py-2 px-2 w-full"
-                ></input>
-                <div className="max-h-72 w-[250px] overflow-y-scroll absolute bg-[#D2DAFF] shadow">
-                  {
-                    filterUserData?.map((data, index) => (
+                />
+                <div className="absolute top-[50%] right-1 -translate-y-[50%] flex gap-2">
+                  {responsiblePersonData?.map((data, index) => {
+                    return (
                       <Button
+                        key={index}
                         size="sm"
                         color="gray"
-                        className="min-w-fit bg-opacity-0 shadow-none text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs text-start border-b border-gray-500 capitalize rounded-none"
+                        onClick={() => updateResponsiblePersons(data)}
+                        className="min-w-fit bg-opacity-20 text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs rounded-full capitalize"
                         ripple={false}
                         fullWidth={true}
                       >
                         <Avatar
                           size="xs"
                           variant="circular"
-                          alt="natali craig"
-                          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                          alt="User Avatar"
+                          src={data.avatar}
                           className="hover:z-10 mr-1 rounded-full"
                         />
-                        <span>{ data?.name}</span>
+                        <span>{data?.name}</span>
                       </Button>
-                    ))
-                  }
+                    );
+                  })}
                 </div>
-               </div>
+                <div className="max-h-72 w-[250px] overflow-y-scroll absolute bg-[#D2DAFF] shadow">
+                  {filterUserData?.map((data, index) => (
+                    <Button
+                      key={index}
+                      size="sm"
+                      color="gray"
+                      onClick={() => updateResponsiblePersons(data)}
+                      className="min-w-fit bg-opacity-0 shadow-none text-gray-800 hover:scale-[1.02] focus:scale-[1.02] active:scale-100 p-1 text-xs text-start border-b border-gray-500 capitalize rounded-none"
+                      ripple={false}
+                      fullWidth={true}
+                    >
+                      <Avatar
+                        size="xs"
+                        variant="circular"
+                        alt="User Avatar"
+                        src={data.avatar}
+                        className="hover:z-10 mr-1 rounded-full"
+                      />
+                      <span>{data?.name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="py-2 grid grid-cols-12 items-center border-b border-gray-400">
               <h1 className="col-span-3">Created by</h1>
@@ -171,7 +203,7 @@ export function CreateTask() {
 
           <div className="flex w-full justify-between py-1.5">
             <IconButton variant="text" color="blue-gray" size="sm">
-            fdg
+              {/* Add your IconButton content here */}
             </IconButton>
 
             <div className="flex gap-2">
