@@ -23,13 +23,13 @@ export const TaskDetails = () => {
  
 
 
-  // Function to handle updating the status when a link is clicked
   const handleUpdateStatus = (taskId, newStatus) => {
-    const updatedTask = {
-      status: newStatus, // Update the status property
-    };
-    updateTask(taskId, updatedTask);
-   
+    try {
+      // Use the correct updateTask function from the context
+      updateTask(taskId, newStatus);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   

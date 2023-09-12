@@ -27,18 +27,15 @@ export function TaskItem({ data, bg }) {
 
   // Function to handle updating the status when a link is clicked
   const handleUpdateStatus = (taskId, newStatus) => {
- try {
-   const updatedTask = {
-     status: newStatus, // Update the status property
-   };
-   updateTask(taskId, updatedTask);
- } catch (error) {
-  console.log(error)
- }
-    
+    try {
+      // Use the correct updateTask function from the context
+      updateTask(taskId, newStatus);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(data)
+  
 
   return (
     <Card className="max-w-[24rem] overflow-hidden p-0 rounded mt-3">
